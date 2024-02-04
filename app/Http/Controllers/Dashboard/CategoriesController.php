@@ -166,7 +166,7 @@ class CategoriesController extends Controller
         }
 
         return redirect()->route('dashboard.categories.trash')
-            ->with('succes', 'Category deleted forever!');
+            ->with('succes', 'Category deleted forever');
     }
 
 }
