@@ -11,7 +11,8 @@
 @section('content')
 
 <div class="mb-5">
-    <a href="{{ route('dashboard.categories.index') }}" class="btn btn-sm btn-outline-primary">Back</a>
+    <a href="{{ route('dashboard.categories.index') }}"
+    class="btn btn-sm btn-outline-primary">Back</a>
 </div>
 
 <x-alert type="success" />
