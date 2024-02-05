@@ -20,7 +20,7 @@ class CategoriesController extends Controller
     {
         $request=request();
 
-        $categories =Category::filter($request->query())->paginate(2); // return object coll
+        $categories =Category::filter($request->query())->paginate(5); // return object coll
         return view('dashboard.categories.index', compact('categories'));
     }
 
