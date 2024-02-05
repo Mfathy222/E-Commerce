@@ -13,7 +13,8 @@ class ProductsController extends Controller
      */
     public function index()
     {
-       $products=product::paginate(4);
+        //use eagger loading 
+       $products=product::with(['category','store'])->paginate(4);
        return view('dashboard.products.index',compact('products'));
     }
 
@@ -46,7 +47,7 @@ class ProductsController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $product= product::findorfail($id);
     }
 
     /**

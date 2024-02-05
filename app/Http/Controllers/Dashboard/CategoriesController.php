@@ -20,7 +20,15 @@ class CategoriesController extends Controller
     {
         $request=request();
 
-        $categories =Category::filter($request->query())->paginate(5); // return object coll
+        // $categories =Category::filter($request->query())->paginate(5); // return object coll
+        $categories =Category::with('parent')
+        ->withCount('products')
+        ->filter($request->query())
+        ->orderBy('categories.name')
+        ->paginate(5);
+
+
+
         return view('dashboard.categories.index', compact('categories'));
     }
 
@@ -61,9 +69,9 @@ class CategoriesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Category $category)
     {
-        //
+        return view('dashboard.categories.show', ['category'=>$category]);
     }
 
     /**

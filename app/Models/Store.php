@@ -11,4 +11,9 @@ class Store extends Model
     protected $fillable=[
         'name','slug','description','logo_image','cover_image','status'
     ];
+
+    public function products(){
+        return $this->hasMany(product::class,'store_id','id');
+    }
+
 }
