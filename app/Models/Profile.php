@@ -22,7 +22,7 @@ class Profile extends Model
 'city',
 'postal_code',
 'country',
-'local',
+'locale',
     ];
 
     public function user() {

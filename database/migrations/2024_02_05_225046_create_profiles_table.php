@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('state')->nullable();
             $table->string('postal_code')->nullable();
             $table->char('country',2);
-            $table->char('local',2)->default('en');
+            $table->char('locales',2)->default('en');
             $table->timestamps();
         });
     }
