@@ -25,52 +25,61 @@ class CartController extends Controller
         $repository = new CartModelRepository();
         $items = $repository->get();
 
-        return view('front.cart',[
-            'cart'=> $this->cart,
+        return view('front.cart', [
+            'cart' => $this->cart,
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request,CartRepositories $cart)
+    public function store(Request $request, CartRepositories $cart)
     {
         $request->validate([
-            'product_id'=>['required','int','exists:products,id'],
-            'quantity'=>['nullable', 'int' , 'min:1'],
+            'product_id' => ['required', 'int', 'exists:products,id'],
+            'quantity' => ['nullable', 'int', 'min:1'],
         ]);
-        
+
 
         $product = product::findOrFail($request->post('product_id'));
         $this->cart->add($product, $request->post('quantity'));
 
+        if ($request->expectsJson()){
+            return response()->json([
+                'massage'=>'item add to cart',
+            ],201);
+        }
         return redirect()
-        ->route('cart.index')
-        ->with('success','product added to cart');
+            ->route('cart.index')
+            ->with('success', 'product added to cart');
     }
 
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,CartRepositories $cart)
+    public function update(Request $request, $id)
     {
         $request->validate([
-            'product_id'=>['required','int','exists:product,id'],
-            'quantity'=>['nullable', 'int' , 'min:1'],
+
+            'quantity' => ['required', 'int', 'min:1'],
         ]);
 
-        $product = product::findOrFail($request->post('product_id'));
+
         // $repository =new CartModelRrpository();
-        $cart->update($product,$request->post('quantity'));
+        $this->cart->update($id, $request->post('quantity'));
 
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CartRepositories $cart, $id)
+    public function destroy($id)
     {
-        $cart->delete($id);
+        $this->cart->delete($id);
+
+    return[
+        'message'=>'item deleted ',
+    ];
     }
 }

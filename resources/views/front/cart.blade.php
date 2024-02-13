@@ -129,7 +129,10 @@
         const csrf_token = "{{ csrf_token() }}";
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="{{ asset('js/cart.js') }}"></script>
+
     @endpush
+    @vite(['resources/js/cart.js'])
+
+
 
 </x-front-layout>
