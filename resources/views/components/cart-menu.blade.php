@@ -29,9 +29,9 @@
                 <span>Total</span>
                 <span class="total-amount">{{ Currency::format($total) }}</span>
             </div>
-            {{-- <div class="button">
+            <div class="button">
                 <a href="{{ route('checkout') }}" class="btn animate">Checkout</a>
-            </div> --}}
+            </div>
         </div>
     </div>
     <!--/ End Shopping Item -->
