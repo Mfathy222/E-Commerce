@@ -110,7 +110,7 @@
                                         <li class="last">You Pay<span>$2531.00</span></li>
                                     </ul>
                                     <div class="button">
-                                        <a href="checkout.html" class="btn">Checkout</a>
+                                        <a href="{{route('checkout') }}" class="btn">Checkout</a>
                                         <a href="product-grids.html" class="btn btn-alt">Continue shopping</a>
                                     </div>
                                 </div>
@@ -129,10 +129,7 @@
         const csrf_token = "{{ csrf_token() }}";
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
+    <script src="{{ asset('js/cart.js') }}"></script>
     @endpush
-    @vite(['resources/js/cart.js'])
-
-
 
 </x-front-layout>

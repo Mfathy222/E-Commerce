@@ -4,19 +4,18 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>{{$title}}</title>
+    <title>{{ $title }}</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="shortcut icon" type="image/x-icon" href="{{asset('assets/images/favicon.svg')}}" />
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/images/favicon.svg') }}" />
 
     <!-- ========================= CSS here ========================= -->
-    <link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}" />
-    <link rel="stylesheet" href="{{asset('assets/css/LineIcons.3.0.css')}}" />
-    <link rel="stylesheet" href="{{asset('assets/css/tiny-slider.css')}}" />
-    <link rel="stylesheet" href="{{asset('assets/css/glightbox.min.css')}}" />
-    <link rel="stylesheet" href="{{asset('assets/css/main.css')}}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/LineIcons.3.0.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/tiny-slider.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/glightbox.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}" />
     @stack('styles')
-
 </head>
 
 <body>
@@ -49,29 +48,30 @@
                         <div class="top-left">
                             <ul class="menu-top-link">
                                 <li>
-                                    <div class="select-position">
-                                        <select id="select4">
-                                            <option value="0" selected>$ USD</option>
-                                            <option value="1">€ EURO</option>
-                                            <option value="2">$ CAD</option>
-                                            <option value="3">₹ INR</option>
-                                            <option value="4">¥ CNY</option>
-                                            <option value="5">৳ BDT</option>
-                                        </select>
-                                    </div>
+                                    {{-- <div class="select-position">
+                                        <form action="{{ route('currency.store') }}" method="post">
+                                            @csrf
+                                            <select name="currency_code" onchange="this.form.submit()">
+                                                <option value="USD" @selected('USD' == session('currency_code'))>$ USD</option>
+                                                <option value="EUR" @selected('EUR' == session('currency_code'))>€ EURO</option>
+                                                <option value="ILS" @selected('ILS' == session('currency_code'))>$ ILS</option>
+                                                <option value="JOD" @selected('JOD' == session('currency_code'))>₹ JOD</option>
+                                                <option value="SAR" @selected('SAR' == session('currency_code'))>¥ SAR</option>
+                                                <option value="QAR" @selected('QAR' == session('currency_code'))>৳ QAR</option>
+                                            </select>
+                                        </form>
+                                    </div> --}}
                                 </li>
                                 <li>
-                                    <div class="select-position">
-                                        <select id="select5">
-                                            <option value="0" selected>English</option>
-                                            <option value="1">Español</option>
-                                            <option value="2">Filipino</option>
-                                            <option value="3">Français</option>
-                                            <option value="4">العربية</option>
-                                            <option value="5">हिन्दी</option>
-                                            <option value="6">বাংলা</option>
-                                        </select>
-                                    </div>
+                                    {{-- <div class="select-position">
+                                        <form action="{{ URL::current() }}" method="get">
+                                            <select name="locale" onchange="this.form.submit()">
+                                                @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                                                    <option value="{{ $localeCode }}" @selected($localeCode == App::currentLocale())>{{ $properties['native'] }}</option>
+                                                @endforeach
+                                            </select>
+                                        </form>
+                                    </div> --}}
                                 </li>
                             </ul>
                         </div>
@@ -79,26 +79,41 @@
                     <div class="col-lg-4 col-md-4 col-12">
                         <div class="top-middle">
                             <ul class="useful-links">
-                                <li><a href="index.html">Home</a></li>
-                                <li><a href="about-us.html">About Us</a></li>
-                                <li><a href="contact.html">Contact Us</a></li>
+                                <li><a href="index.html">{{ trans('Home') }}</a></li>
+                                <li><a href="about-us.html">@lang('About Us')</a></li>
+                                <li><a href="contact.html">{{ __('Contact Us') }}</a></li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-4 col-12">
                         <div class="top-end">
+                            @auth
                             <div class="user">
                                 <i class="lni lni-user"></i>
-                                Hello
+                                {{ Auth::user()->name }}
                             </div>
                             <ul class="user-login">
                                 <li>
-                                    <a href="login.html">Sign In</a>
+                                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout').submit()">Sign Out</a>
+                                </li>
+                                <form action="{{ route('logout') }}" id="logout" method="post" style="display:none">
+                                    @csrf
+                                </form>
+                            </ul>
+                            @else
+                            <div class="user">
+                                <i class="lni lni-user"></i>
+                                {{ __('Hello')}}
+                            </div>
+                            <ul class="user-login">
+                                <li>
+                                    <a href="{{ route('login') }}">{{ Lang::get('Sign In') }}</a>
                                 </li>
                                 <li>
-                                    <a href="register.html">Register</a>
+                                    <a href="{{ route('register') }}">{{ __('Register') }}</a>
                                 </li>
                             </ul>
+                            @endauth
                         </div>
                     </div>
                 </div>
@@ -112,7 +127,7 @@
                     <div class="col-lg-3 col-md-3 col-7">
                         <!-- Start Header Logo -->
                         <a class="navbar-brand" href="index.html">
-                            <img src="{{asset('assets/images/logo/logo.svg')}}" alt="Logo">
+                            <img src="{{ asset('assets/images/logo/logo.svg') }}" alt="Logo">
                         </a>
                         <!-- End Header Logo -->
                     </div>
@@ -293,12 +308,10 @@
     <!-- End Header Area -->
 
     <!-- Start Breadcrumbs -->
-{{$breadcrumb ?? ''}}
+    {{ $breadcrumb ?? '' }}
     <!-- End Breadcrumbs -->
 
-    <!-- Start Account Login Area -->
-{{$slot}}
-    <!-- End Account Login Area -->
+    {{ $slot }}
 
     <!-- Start Footer Area -->
     <footer class="footer">
@@ -310,7 +323,7 @@
                         <div class="col-lg-3 col-md-4 col-12">
                             <div class="footer-logo">
                                 <a href="index.html">
-                                    <img src="{{asset('assets/images/logo/white-logo.svg')}}" alt="#">
+                                    <img src="{{ asset('assets/images/logo/white-logo.svg') }}" alt="#">
                                 </a>
                             </div>
                         </div>
@@ -419,7 +432,7 @@
                         <div class="col-lg-4 col-12">
                             <div class="payment-gateway">
                                 <span>We Accept:</span>
-                                <img src="{{asset('assets/images/footer/credit-cards-footer.png')}}" alt="#">
+                                <img src="{{ asset('assets/images/footer/credit-cards-footer.png') }}" alt="#">
                             </div>
                         </div>
                         <div class="col-lg-4 col-12">
@@ -453,11 +466,13 @@
     </a>
 
     <!-- ========================= JS here ========================= -->
-    <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
-    <script src="{{asset('assets/js/tiny-slider.js')}}"></script>
-    <script src="{{asset('assets/js/glightbox.min.js')}}"></script>
-    <script src="{{asset('assets/js/main.js')}}"></script>
+    <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/js/tiny-slider.js') }}"></script>
+    <script src="{{ asset('assets/js/glightbox.min.js') }}"></script>
+    <script src="{{ asset('assets/js/main.js') }}"></script>
+
     @stack('scripts')
+
 </body>
 
 </html>
